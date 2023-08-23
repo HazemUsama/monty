@@ -57,7 +57,7 @@ typedef struct info_s
 	int line_number;
         int flag;
         int cnt;
-	char **token;
+	char **tokens;
 	FILE *file;
         stack_t *head;
         stack_t *tail;

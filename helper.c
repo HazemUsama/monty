@@ -36,7 +36,7 @@ char **tokenize(void)
 	int argCount = 0;
 
 	line = readInput();
-	inf.cnt = countTokens(line, " \n");
+	inf.cnt = countTokens(line, " \n") - 1;
 	if (inf.cnt == 1)
 		return (NULL);
 
@@ -50,7 +50,8 @@ char **tokenize(void)
 	{
 		arg[argCount] = _strdup(token);
 		if (arg[argCount++] == NULL)
-		{ malloc_faild();
+		{
+			malloc_faild();
 		}
 		token = strtok(NULL, " \n");
 	}

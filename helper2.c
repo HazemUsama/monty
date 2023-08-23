@@ -15,7 +15,7 @@ void call(void)
 	i = 0;
 	while (instruct[i].opcode)
 	{
-		if (strcmp(instruct[i].opcode, inf.token[0]) == 0)
+		if (strcmp(instruct[i].opcode, inf.tokens[0]) == 0)
 		{
 			instruct[i].f(&inf.head, inf.line_number);
 			return;

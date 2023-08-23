@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	while (1)
 	{
 
-		inf.token = tokenize();
+		inf.tokens = tokenize();
 		inf.line_number++;
 		call();
 	}

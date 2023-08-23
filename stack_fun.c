@@ -11,10 +11,10 @@ void _push(notUsed stack_t **stack, notUsed unsigned int line_number)
 	stack_t *new_node;
 	int num;
 
-	if (inf.cnt <= 2 || !is_int(inf.token[1]))
+	if (inf.cnt < 2 || !is_int(inf.tokens[1]))
 		print_err("usage: push integer");
 
-	num = atoi(inf.token[1]);
+	num = atoi(inf.tokens[1]);
 	new_node = create_node(num);
 	if (inf.head == NULL)
 	{
