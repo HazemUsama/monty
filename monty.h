@@ -3,6 +3,17 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct info_struct
+{
+	FILE *file;
+	int count;
+	char **line;
+	char *opcode;
+
+}info;
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
