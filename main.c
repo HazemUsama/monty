@@ -1,18 +1,34 @@
 #include "monty.h"
+
+info inf = INIT_INF;
+
+/**
+ * main - entry point
+ * @argc: arguments count
+ * @argv: the arguments
+ *
+ * Return: 0 on success
+ */
 int main(int argc, char **argv)
-{	
-	if(argc != 2)
+{
+	if (argc != 2)
 	{
-		fprintf(strerr, "USAGE: monty file\n");
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-	info->file = fopen(argv[1], "r");
-	if (info->file == NULL)
+
+	inf.file = fopen(argv[1], "r");
+	if (inf.file == NULL)
 	{
-		fprintf(strerr, "Error: Can't open file <file>\n");
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-	read(info->file);
-	fclose(info->file);
+	while (1)
+	{
+
+		inf.token = tokenize();
+		call();
+	}
+	fclose(inf.file);
 	return (0);
 }
