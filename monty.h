@@ -77,6 +77,9 @@ stack_t *create_node(int n);
 char *_strdup(char *str);
 void call(void);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
+void freeToken();
+void freeStack();
+
 /* Monty Functions */
 void _push(stack_t **stack, unsigned int line_number);
 void _pall(stack_t **stack, unsigned int line_number);

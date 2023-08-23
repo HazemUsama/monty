@@ -29,6 +29,7 @@ int main(int argc, char **argv)
 		inf.tokens = tokenize();
 		inf.line_number++;
 		call();
+		freeToken();
 	}
 	fclose(inf.file);
 	return (0);

@@ -8,10 +8,11 @@ void call(void)
 {
 	int i;
 	instruction_t instruct[] = {
-	{"push", _push},
-	{"pall", _pall},
+		{"push", _push},
+		{"pall", _pall},
 		{NULL, NULL}
 	};
+
 	i = 0;
 	while (instruct[i].opcode)
 	{

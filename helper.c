@@ -72,6 +72,7 @@ char *readInput(void)
 
 	if (_getline(&line, &len, inf.file) == EOF)
 	{
+		freeStack();
 		exit(EXIT_SUCCESS);
 	}
 
@@ -85,6 +86,8 @@ char *readInput(void)
 void print_err(char *message)
 {
 	fprintf(stderr, "L%d: %s\n", inf.line_number, message);
+	freeToken();
+	freeStack();
 	exit(EXIT_FAILURE);
 }
 /**
@@ -93,6 +96,8 @@ void print_err(char *message)
 void malloc_faild(void)
 {
 	fprintf(stderr, "Error: malloc failed\n");
+	freeToken();
+	freeStack();
 	exit(EXIT_FAILURE);
 }
 
