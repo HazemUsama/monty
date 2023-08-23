@@ -1,6 +1,10 @@
 #include "monty.h"
 
-void freeToken()
+
+/**
+ * freeToken - free the tokens
+ */
+void freeToken(void)
 {
 	size_t i;
 
@@ -13,10 +17,11 @@ void freeToken()
 		inf.tokens[i] = NULL;
 	}
 	free(inf.tokens);
-	
 }
-
-void freeStack()
+/**
+* freeStack - free the stack
+*/
+void freeStack(void)
 {
 	stack_t *curr;
 

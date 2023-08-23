@@ -21,9 +21,9 @@
  */
 typedef struct stack_s
 {
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
 } stack_t;
 
 /**
@@ -36,18 +36,18 @@ typedef struct stack_s
  */
 typedef struct instruction_s
 {
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
 /**
- * info_s - struct to save info about the stack
+ * struct info_s - struct to save info about the stack
  *
- * @file: the file we read from
  * @line_number: the line number
  * @flag: if it's stack (1) else (0)
  * @cnt: number of arguments
- * @token: the line arguments
+ * @tokens: the line arguments
+ * @file: the file we read from
  * @head: the head of the linked list
  * @tail: the tail of the linked list
  *
@@ -55,12 +55,12 @@ typedef struct instruction_s
 typedef struct info_s
 {
 	int line_number;
-        int flag;
-        int cnt;
+	int flag;
+	int cnt;
 	char **tokens;
 	FILE *file;
-        stack_t *head;
-        stack_t *tail;
+	stack_t *head;
+	stack_t *tail;
 
 } info;
 
@@ -77,8 +77,8 @@ stack_t *create_node(int n);
 char *_strdup(char *str);
 void call(void);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
-void freeToken();
-void freeStack();
+void freeToken(void);
+void freeStack(void);
 
 /* Monty Functions */
 void _push(stack_t **stack, unsigned int line_number);
