@@ -16,11 +16,7 @@ int countTokens(char *str, const char *delim)
 	char *token, *str_copy = strdup(str);
 	
 	if (str_copy == NULL)
-	{
-		if (str)
-			free(str);
 		malloc_failed();
-	}
 
 	token = strtok(str_copy, delim);
 	while (token)
@@ -45,8 +41,7 @@ char **tokenize(void)
 	int argCount = 0, i;
 
 	line = readInput();
-	if (line == NULL)
-		return (NULL);
+
 	inf.cnt = countTokens(line, " \n");
 
 	if (inf.cnt == 1)
@@ -95,7 +90,6 @@ char *readInput(void)
 
 	if (getline(&line, &len, inf.file) == EOF)
 	{
-		free(line);
 		freeAll();
 		exit(EXIT_SUCCESS);
 	}
