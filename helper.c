@@ -47,7 +47,10 @@ char **tokenize(void)
 	line = readInput();
 	inf.cnt = countTokens(line, " \n");
 	if (inf.cnt == 1)
+	{
+		free(line);
 		return (NULL);
+	}
 
 	arg = malloc(sizeof(char *) * inf.cnt);
 	if (arg == NULL)
