@@ -40,7 +40,7 @@ int is_int(char *str)
 
 	if (str == NULL)
 		return (0);
-	
+
 	i = 0;
 	while (str[i])
 	{

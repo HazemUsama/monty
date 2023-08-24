@@ -23,7 +23,7 @@ void freeToken(void)
 void freeStack(void)
 {
 	stack_t *curr;
-	
+
 	while (inf.head)
 	{
 		curr = inf.head->prev;
@@ -43,4 +43,12 @@ bool is_empty(void)
 	return (inf.head == NULL);
 }
 
-
+/**
+ * freeAll - free all allocated meomry
+ */
+void freeAll(void)
+{
+	freeToken();
+	freeStack();
+	fclose(inf.file);
+}
