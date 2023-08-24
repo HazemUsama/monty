@@ -1,4 +1,5 @@
 #include "monty.h"
+#include <stdlib.h>
 
 /**
  * call - compare the opcode and call the right function
@@ -23,7 +24,10 @@ void call(void)
 		}
 		i++;
 	}
-	print_err("unknown instruction");
+	fprintf(stderr, "L%d: unknown instruction %s\n",
+	 inf.line_number, inf.tokens[0]);
+	freeAll();
+	exit(EXIT_FAILURE);
 }
 
 /**

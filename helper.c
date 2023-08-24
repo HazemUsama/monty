@@ -14,7 +14,7 @@ int countTokens(char *str, const char *delim)
 {
 	int count = 0;
 	char *token, *str_copy = strdup(str);
-	
+
 	if (str_copy == NULL)
 	{
 		free(str);
@@ -27,9 +27,8 @@ int countTokens(char *str, const char *delim)
 		count++;
 		token = strtok(NULL, delim);
 	}
-	count++;
 	free(str_copy);
-	return (count);
+	return (count + 1);
 }
 
 /**
