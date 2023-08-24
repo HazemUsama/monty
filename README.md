@@ -1,5 +1,5 @@
 0x19. C - Stacks, Queues - LIFO, FIFO
-jg`
+jgb b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b `
 abcdefghijkl
 o
 
