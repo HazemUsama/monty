@@ -66,7 +66,7 @@ char **tokenize(void)
 			free(line);
 			for (i = 0; i < argCount; i++)
 				free(arg[i]);
-
+			free(arg);
 			malloc_failed();
 		}
 		argCount++;
