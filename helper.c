@@ -93,7 +93,8 @@ char *readInput(void)
 
 	if (getline(&line, &len, inf.file) == EOF)
 	{
-		free(line);
+		if (line)
+			free(line);
 		freeAll();
 		exit(EXIT_SUCCESS);
 	}

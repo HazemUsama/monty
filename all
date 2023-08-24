@@ -69,7 +69,7 @@ typedef struct info_s
 
 
 /* Functions */
-int countTokens(char **str, const char *delim);
+int countTokens(char *str, const char *delim);
 char *readInput(void);
 char **tokenize(void);
 void malloc_failed(void);
@@ -85,6 +85,8 @@ void _push(stack_t **stack, unsigned int line_number);
 void _pall(stack_t **stack, unsigned int line_number);
 void _pint(stack_t **stack, unsigned int line_number);
 bool is_empty(void);
+
+
 extern info inf;
 #endif
 #include "monty.h"
@@ -99,15 +101,14 @@ extern info inf;
  *
  * Return: the number of tokens in the string
  */
-int countTokens(char **str, const char *delim)
+int countTokens(char *str, const char *delim)
 {
 	int count = 0;
-	char *token, *str_copy = strdup(*str);
+	char *token, *str_copy = strdup(str);
 	
 	if (str_copy == NULL)
 	{
-		if (*str)
-			free(*str);
+		free(str);
 		malloc_failed();
 	}
 
@@ -134,7 +135,8 @@ char **tokenize(void)
 	int argCount = 0, i;
 
 	line = readInput();
-	inf.cnt = countTokens(&line, " \n");
+
+	inf.cnt = countTokens(line, " \n");
 
 	if (inf.cnt == 1)
 	{
@@ -158,7 +160,7 @@ char **tokenize(void)
 			free(line);
 			for (i = 0; i < argCount; i++)
 				free(arg[i]);
-
+			free(arg);
 			malloc_failed();
 		}
 		argCount++;
@@ -182,6 +184,7 @@ char *readInput(void)
 
 	if (getline(&line, &len, inf.file) == EOF)
 	{
+		free(line);
 		freeAll();
 		exit(EXIT_SUCCESS);
 	}
@@ -209,14 +212,7 @@ void malloc_failed(void)
 	exit(EXIT_FAILURE);
 }
 
-void freeAll(void)
-{
-	freeToken();
-	freeStack();
-	fclose(inf.file);
-}
 #include "monty.h"
-#include <stdio.h>
 
 /**
  * call - compare the opcode and call the right function
@@ -257,7 +253,7 @@ int is_int(char *str)
 
 	if (str == NULL)
 		return (0);
-	
+
 	i = 0;
 	while (str[i])
 	{
@@ -317,7 +313,7 @@ void freeToken(void)
 void freeStack(void)
 {
 	stack_t *curr;
-	
+
 	while (inf.head)
 	{
 		curr = inf.head->prev;
@@ -337,7 +333,15 @@ bool is_empty(void)
 	return (inf.head == NULL);
 }
 
-
+/**
+ * freeAll - free all allocated meomry
+ */
+void freeAll(void)
+{
+	freeToken();
+	freeStack();
+	fclose(inf.file);
+}
 #include "monty.h"
 
 info inf = INIT_INF;
