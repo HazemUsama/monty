@@ -16,7 +16,10 @@ int countTokens(char *str, const char *delim)
 	char *token, *str_copy = strdup(str);
 	
 	if (str_copy == NULL)
+	{
+		free(str);
 		malloc_failed();
+	}
 
 	token = strtok(str_copy, delim);
 	while (token)
