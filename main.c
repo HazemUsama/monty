@@ -30,6 +30,7 @@ int main(int argc, char **argv)
 		call();
 		freeToken();
 	}
+	freeStack();
 	fclose(inf.file);
 	return (0);
 }

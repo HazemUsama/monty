@@ -10,8 +10,10 @@ void freeToken(void)
 
 	if (inf.tokens == NULL)
 		return;
+
 	for (i = 0; inf.tokens[i]; i++)
 		free(inf.tokens[i]);
+
 	free(inf.tokens);
 	inf.tokens = NULL;
 }
@@ -21,7 +23,7 @@ void freeToken(void)
 void freeStack(void)
 {
 	stack_t *curr;
-
+	
 	while (inf.head)
 	{
 		curr = inf.head->prev;

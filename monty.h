@@ -1,6 +1,9 @@
 #ifndef MONTY_H
 #define MONTY_H
 
+#define INIT_INF { 0, 1, 0, NULL, NULL, NULL, NULL }
+#define notUsed __attribute__((unused))
+#define _POSIX_C_SOURCE 200809L
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,8 +11,6 @@
 #include <stdbool.h>
 #include <sys/types.h>
 
-#define INIT_INF { 0, 1, 0, NULL, NULL, NULL, NULL }
-#define notUsed __attribute__((unused))
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -75,12 +76,10 @@ void malloc_faild(void);
 void print_err(char *message);
 int is_int(char *str);
 stack_t *create_node(int n);
-char *_strdup(char *str);
 void call(void);
-ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 void freeToken(void);
 void freeStack(void);
-
+void freeAll(void);
 /* Monty Functions */
 void _push(stack_t **stack, unsigned int line_number);
 void _pall(stack_t **stack, unsigned int line_number);

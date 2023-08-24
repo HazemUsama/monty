@@ -1,4 +1,6 @@
 #include "monty.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /**
  * countTokens - count the number of tokens in a string
@@ -11,7 +13,14 @@
 int countTokens(char *str, const char *delim)
 {
 	int count = 0;
-	char *token, *str_copy = _strdup(str);
+	char *token, *str_copy = strdup(str);
+	
+	if (str_copy == NULL)
+	{
+		if (str)
+			free(str);
+		malloc_faild();
+	}
 
 	token = strtok(str_copy, delim);
 	while (token)
@@ -33,7 +42,7 @@ char **tokenize(void)
 {
 	char *line, *token;
 	char **arg = NULL;
-	int argCount = 0;
+	int argCount = 0, i;
 
 	line = readInput();
 	inf.cnt = countTokens(line, " \n");
@@ -43,16 +52,23 @@ char **tokenize(void)
 	arg = malloc(sizeof(char *) * inf.cnt);
 	if (arg == NULL)
 	{
+		free(line);
 		malloc_faild();
 	}
+
 	token = strtok(line, " \n");
 	while (token)
 	{
-		arg[argCount] = _strdup(token);
-		if (arg[argCount++] == NULL)
+		arg[argCount] = strdup(token);
+		if (arg[argCount] == NULL)
 		{
+			free(line);
+			for (i = 0; i < argCount; i++)
+				free(arg[i]);
+
 			malloc_faild();
 		}
+		argCount++;
 		token = strtok(NULL, " \n");
 	}
 	arg[argCount] = NULL;
@@ -71,9 +87,9 @@ char *readInput(void)
 	size_t len = 0;
 	char *line = NULL;
 
-	if (_getline(&line, &len, inf.file) == EOF)
+	if (getline(&line, &len, inf.file) == EOF)
 	{
-		freeStack();
+		freeAll();
 		exit(EXIT_SUCCESS);
 	}
 
@@ -87,8 +103,7 @@ char *readInput(void)
 void print_err(char *message)
 {
 	fprintf(stderr, "L%d: %s\n", inf.line_number, message);
-	freeToken();
-	freeStack();
+	freeAll();
 	exit(EXIT_FAILURE);
 }
 /**
@@ -97,8 +112,13 @@ void print_err(char *message)
 void malloc_faild(void)
 {
 	fprintf(stderr, "Error: malloc failed\n");
-	freeToken();
-	freeStack();
+	freeAll();
 	exit(EXIT_FAILURE);
 }
 
+void freeAll(void)
+{
+	freeToken();
+	freeStack();
+	fclose(inf.file);
+}
