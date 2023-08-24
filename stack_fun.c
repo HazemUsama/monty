@@ -44,3 +44,34 @@ void _pall(stack_t **stack, unsigned int notUsed line_number)
 		curr = curr->prev;
 	}
 }
+
+/**
+ * is_empty - checking if the stack is empty
+ * @stack: stack
+ * Return: bolean
+ */
+
+bool is_empty()
+{
+	return ((inf.head) == NULL);
+}
+
+/**
+ * _pall - print the top 
+ * @stack: stack
+ * @line_number: line number
+ * Return: nothing
+ */
+
+void _pint(stack_t notUsed **stack, unsigned int notUsed line_number)
+{
+	if (is_empty())
+	{
+		fprintf(stderr, "L<%d>: can't pint, stack empty", inf.line_number);
+		exit(EXIT_FAILURE);
+	}
+	if (strcmp((inf.tokens[0]), "pint") != 0)
+		print_err("usage: pint");
+	printf("%d\n", inf.head->n);
+
+}
