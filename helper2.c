@@ -43,7 +43,7 @@ int is_int(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[0] == '-')
+		if (i == 0 && str[i] == '-')
 		{
 			i++;
 			continue;
