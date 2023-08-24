@@ -19,7 +19,7 @@ int countTokens(char *str, const char *delim)
 	{
 		if (str)
 			free(str);
-		malloc_faild();
+		malloc_failed();
 	}
 
 	token = strtok(str_copy, delim);
@@ -53,7 +53,7 @@ char **tokenize(void)
 	if (arg == NULL)
 	{
 		free(line);
-		malloc_faild();
+		malloc_failed();
 	}
 
 	token = strtok(line, " \n");
@@ -66,7 +66,7 @@ char **tokenize(void)
 			for (i = 0; i < argCount; i++)
 				free(arg[i]);
 
-			malloc_faild();
+			malloc_failed();
 		}
 		argCount++;
 		token = strtok(NULL, " \n");
@@ -107,9 +107,9 @@ void print_err(char *message)
 	exit(EXIT_FAILURE);
 }
 /**
- * malloc_faild - exit with an error message when allocation falis
+ * malloc_failed - exit with an error message when allocation falis
  */
-void malloc_faild(void)
+void malloc_failed(void)
 {
 	fprintf(stderr, "Error: malloc failed\n");
 	freeAll();

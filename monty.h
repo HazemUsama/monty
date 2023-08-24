@@ -72,7 +72,7 @@ typedef struct info_s
 int countTokens(char *str, const char *delim);
 char *readInput(void);
 char **tokenize(void);
-void malloc_faild(void);
+void malloc_failed(void);
 void print_err(char *message);
 int is_int(char *str);
 stack_t *create_node(int n);

@@ -23,14 +23,13 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-	while (1)
+	while (++inf.line_number)
 	{
 		inf.tokens = tokenize();
-		inf.line_number++;
+		if (inf.tokens == NULL)
+			continue;
 		call();
 		freeToken();
 	}
-	freeStack();
-	fclose(inf.file);
 	return (0);
 }

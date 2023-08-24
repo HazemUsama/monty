@@ -1,0 +1,431 @@
+#include "monty.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+/**
+ * countTokens - count the number of tokens in a string
+ *
+ * @str: the string to count tokens in
+ * @delim: the delimiter used to split the string into tokens
+ *
+ * Return: the number of tokens in the string
+ */
+int countTokens(char *str, const char *delim)
+{
+	int count = 0;
+	char *token, *str_copy = strdup(str);
+	
+	if (str_copy == NULL)
+	{
+		if (str)
+			free(str);
+		malloc_failed();
+	}
+
+	token = strtok(str_copy, delim);
+	while (token)
+	{
+		count++;
+		token = strtok(NULL, delim);
+	}
+	count++;
+	free(str_copy);
+	return (count);
+}
+
+/**
+ * tokenize - split the line to multple strings
+ *
+ * Return: a pointer to the strings on success and NULL on failure
+ */
+char **tokenize(void)
+{
+	char *line, *token;
+	char **arg = NULL;
+	int argCount = 0, i;
+
+	line = readInput();
+	inf.cnt = countTokens(line, " \n");
+	if (inf.cnt == 1)
+		return (NULL);
+
+	arg = malloc(sizeof(char *) * inf.cnt);
+	if (arg == NULL)
+	{
+		free(line);
+		malloc_failed();
+	}
+
+	token = strtok(line, " \n");
+	while (token)
+	{
+		arg[argCount] = strdup(token);
+		if (arg[argCount] == NULL)
+		{
+			free(line);
+			for (i = 0; i < argCount; i++)
+				free(arg[i]);
+
+			malloc_failed();
+		}
+		argCount++;
+		token = strtok(NULL, " \n");
+	}
+	arg[argCount] = NULL;
+	free(line);
+	inf.cnt--;
+	return (arg);
+}
+
+/**
+ * readInput - read input from the terminal
+ *
+ * Return: the input
+ */
+char *readInput(void)
+{
+	size_t len = 0;
+	char *line = NULL;
+
+	if (getline(&line, &len, inf.file) == EOF)
+	{
+		freeAll();
+		exit(EXIT_SUCCESS);
+	}
+
+	return (line);
+}
+/**
+ * print_err - print a message to stderr and exit
+ *
+ * @message: the message to print
+ */
+void print_err(char *message)
+{
+	fprintf(stderr, "L%d: %s\n", inf.line_number, message);
+	freeAll();
+	exit(EXIT_FAILURE);
+}
+/**
+ * malloc_failed - exit with an error message when allocation falis
+ */
+void malloc_failed(void)
+{
+	fprintf(stderr, "Error: malloc failed\n");
+	freeAll();
+	exit(EXIT_FAILURE);
+}
+
+void freeAll(void)
+{
+	freeToken();
+	freeStack();
+	fclose(inf.file);
+}
+#include "monty.h"
+#include <stdio.h>
+
+/**
+ * call - compare the opcode and call the right function
+ */
+void call(void)
+{
+	int i;
+	instruction_t instruct[] = {
+		{"push", _push},
+		{"pall", _pall},
+		{"pint", _pint},
+		{NULL, NULL}
+	};
+
+	i = 0;
+	while (instruct[i].opcode)
+	{
+		if (strcmp(instruct[i].opcode, inf.tokens[0]) == 0)
+		{
+			instruct[i].f(&inf.head, inf.line_number);
+			return;
+		}
+		i++;
+	}
+	print_err("unknown instruction");
+}
+
+/**
+ * is_int - check if it's integer or not
+ *
+ * @str: the integer
+ *
+ * Return: 1 if it's 0 if not
+ */
+int is_int(char *str)
+{
+	size_t i;
+
+	if (str == NULL)
+		return (0);
+	
+	i = 0;
+	while (str[i])
+	{
+		if (str[0] == '-')
+		{
+			i++;
+			continue;
+		}
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+/**
+ * create_node - creat a new node
+ *
+ * @n: the value the node have
+ *
+ * Return: the node;
+ */
+stack_t *create_node(int n)
+{
+	stack_t *new_node = malloc(sizeof(stack_t));
+
+	if (new_node == NULL)
+		malloc_failed();
+	new_node->next = NULL;
+	new_node->prev = NULL;
+	new_node->n = n;
+	return (new_node);
+}
+
+
+#include "monty.h"
+
+
+/**
+ * freeToken - free the tokens
+ */
+void freeToken(void)
+{
+	size_t i;
+
+	if (inf.tokens == NULL)
+		return;
+
+	for (i = 0; inf.tokens[i]; i++)
+		free(inf.tokens[i]);
+
+	free(inf.tokens);
+	inf.tokens = NULL;
+}
+/**
+* freeStack - free the stack
+*/
+void freeStack(void)
+{
+	stack_t *curr;
+	
+	while (inf.head)
+	{
+		curr = inf.head->prev;
+		free(inf.head);
+		inf.head = curr;
+	}
+}
+
+/**
+ * is_empty - checking if the stack is empty
+ *
+ * Return: boolean
+ */
+
+bool is_empty(void)
+{
+	return (inf.head == NULL);
+}
+
+
+#include "monty.h"
+
+info inf = INIT_INF;
+
+/**
+ * main - entry point
+ * @argc: arguments count
+ * @argv: the arguments
+ *
+ * Return: 0 on success
+ */
+int main(int argc, char **argv)
+{
+	if (argc != 2)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+
+	inf.file = fopen(argv[1], "r");
+	if (inf.file == NULL)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+	while (++inf.line_number)
+	{
+		inf.tokens = tokenize();
+		call();
+		freeToken();
+	}
+	return (0);
+}
+#include "monty.h"
+
+/**
+ * _push - push a node to the stack
+ *
+ * @stack: the head of the stack
+ * @line_number: ...
+ */
+void _push(notUsed stack_t **stack, notUsed unsigned int line_number)
+{
+	stack_t *new_node;
+	int num;
+
+	if (inf.cnt < 2 || !is_int(inf.tokens[1]))
+		print_err("usage: push integer");
+
+	num = atoi(inf.tokens[1]);
+	new_node = create_node(num);
+	if (inf.head == NULL)
+	{
+		inf.head = new_node;
+		inf.tail = new_node;
+	}
+	else
+	{
+		new_node->prev = inf.head;
+		inf.head->next = new_node;
+		inf.head = new_node;
+	}
+}
+/**
+ * _pall - print the whole stack
+ *
+ * @stack: the head of the stack
+ * @line_number: ...
+ */
+void _pall(stack_t **stack, unsigned int notUsed line_number)
+{
+	stack_t *curr = *stack;
+
+	while (curr)
+	{
+		printf("%i\n", curr->n);
+		curr = curr->prev;
+	}
+}
+
+/**
+ * _pint - print the top
+ * @stack: stack
+ * @line_number: line number
+ * Return: nothing
+ */
+
+void _pint(notUsed stack_t **stack, unsigned int notUsed line_number)
+{
+	if (is_empty())
+		print_err("can't pint, stack empty");
+
+	printf("%d\n", inf.head->n);
+
+}
+#ifndef MONTY_H
+#define MONTY_H
+
+#define INIT_INF { 0, 1, 0, NULL, NULL, NULL, NULL }
+#define notUsed __attribute__((unused))
+#define _POSIX_C_SOURCE 200809L
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <sys/types.h>
+
+
+/**
+ * struct stack_s - doubly linked list representation of a stack (or queue)
+ * @n: integer
+ * @prev: points to the previous element of the stack (or queue)
+ * @next: points to the next element of the stack (or queue)
+ *
+ * Description: doubly linked list node structure
+ * for stack, queues, LIFO, FIFO
+ */
+typedef struct stack_s
+{
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
+} stack_t;
+
+/**
+ * struct instruction_s - opcode and its function
+ * @opcode: the opcode
+ * @f: function to handle the opcode
+ *
+ * Description: opcode and its function
+ * for stack, queues, LIFO, FIFO
+ */
+typedef struct instruction_s
+{
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
+} instruction_t;
+
+/**
+ * struct info_s - struct to save info about the stack
+ *
+ * @line_number: the line number
+ * @flag: if it's stack (1) else (0)
+ * @cnt: number of arguments
+ * @tokens: the line arguments
+ * @file: the file we read from
+ * @head: the head of the linked list
+ * @tail: the tail of the linked list
+ *
+ */
+typedef struct info_s
+{
+	int line_number;
+	int flag;
+	int cnt;
+	char **tokens;
+	FILE *file;
+	stack_t *head;
+	stack_t *tail;
+
+} info;
+
+
+
+/* Functions */
+int countTokens(char *str, const char *delim);
+char *readInput(void);
+char **tokenize(void);
+void malloc_failed(void);
+void print_err(char *message);
+int is_int(char *str);
+stack_t *create_node(int n);
+void call(void);
+void freeToken(void);
+void freeStack(void);
+void freeAll(void);
+/* Monty Functions */
+void _push(stack_t **stack, unsigned int line_number);
+void _pall(stack_t **stack, unsigned int line_number);
+void _pint(stack_t **stack, unsigned int line_number);
+bool is_empty(void);
+extern info inf;
+#endif

@@ -36,13 +36,22 @@ void call(void)
  */
 int is_int(char *str)
 {
-	if (*str && *str == '-')
-		str++;
-	while (*str)
+	size_t i;
+
+	if (str == NULL)
+		return (0);
+	
+	i = 0;
+	while (str[i])
 	{
-		if (*str < '0' || *str > '9')
+		if (str[0] == '-')
+		{
+			i++;
+			continue;
+		}
+		if (str[i] < '0' || str[i] > '9')
 			return (0);
-		str++;
+		i++;
 	}
 	return (1);
 }
@@ -58,7 +67,7 @@ stack_t *create_node(int n)
 	stack_t *new_node = malloc(sizeof(stack_t));
 
 	if (new_node == NULL)
-		malloc_faild();
+		malloc_failed();
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	new_node->n = n;
