@@ -45,7 +45,7 @@ char **tokenize(void)
 
 	line = readInput();
 
-	inf.cnt = countTokens(line, " \n");
+	inf.cnt = countTokens(line, " \t\n");
 
 	if (inf.cnt == 1)
 	{
@@ -60,7 +60,7 @@ char **tokenize(void)
 		malloc_failed();
 	}
 
-	token = strtok(line, " \n");
+	token = strtok(line, " \t\n");
 	while (token)
 	{
 		arg[argCount] = strdup(token);
@@ -73,7 +73,7 @@ char **tokenize(void)
 			malloc_failed();
 		}
 		argCount++;
-		token = strtok(NULL, " \n");
+		token = strtok(NULL, " \t\n");
 	}
 	arg[argCount] = NULL;
 	free(line);
