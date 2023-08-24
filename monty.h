@@ -35,7 +35,7 @@ typedef struct stack_s
  * Description: opcode and its function
  * for stack, queues, LIFO, FIFO
  */
-typedef struct instrurtion_s
+typedef struct instruction_s
 {
 	char *opcode;
 	void (*f)(stack_t **stack, unsigned int line_number);
@@ -85,6 +85,6 @@ void freeStack(void);
 void _push(stack_t **stack, unsigned int line_number);
 void _pall(stack_t **stack, unsigned int line_number);
 void _pint(stack_t **stack, unsigned int line_number);
-bool is_empty();
+bool is_empty(void);
 extern info inf;
 #endif

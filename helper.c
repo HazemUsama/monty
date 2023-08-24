@@ -36,7 +36,7 @@ char **tokenize(void)
 	int argCount = 0;
 
 	line = readInput();
-	inf.cnt = countTokens(line, " \n") - 1;
+	inf.cnt = countTokens(line, " \n");
 	if (inf.cnt == 1)
 		return (NULL);
 
@@ -57,6 +57,7 @@ char **tokenize(void)
 	}
 	arg[argCount] = NULL;
 	free(line);
+	inf.cnt--;
 	return (arg);
 }
 
