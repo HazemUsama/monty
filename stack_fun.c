@@ -29,7 +29,7 @@ void _push(notUsed stack_t **stack, notUsed unsigned int line_number)
 			inf.head->next = new_node;
 			inf.head = new_node;
 		}
-		else 
+		else
 		{
 			new_node->next = inf.tail;
 			inf.tail->prev = new_node;
