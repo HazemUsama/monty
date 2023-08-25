@@ -23,9 +23,18 @@ void _push(notUsed stack_t **stack, notUsed unsigned int line_number)
 	}
 	else
 	{
-		new_node->prev = inf.head;
-		inf.head->next = new_node;
-		inf.head = new_node;
+		if (inf.flag)
+		{
+			new_node->prev = inf.head;
+			inf.head->next = new_node;
+			inf.head = new_node;
+		}
+		else 
+		{
+			new_node->next = inf.tail;
+			inf.tail->prev = new_node;
+			inf.tail = new_node;
+		}
 	}
 }
 /**
@@ -36,12 +45,12 @@ void _push(notUsed stack_t **stack, notUsed unsigned int line_number)
  */
 void _pall(stack_t **stack, unsigned int notUsed line_number)
 {
-	stack_t *curr = *stack;
+	stack_t *runner = *stack;
 
-	while (curr)
+	while (runner)
 	{
-		printf("%i\n", curr->n);
-		curr = curr->prev;
+		printf("%i\n", runner->n);
+		runner = runner->prev;
 	}
 }
 
@@ -49,14 +58,39 @@ void _pall(stack_t **stack, unsigned int notUsed line_number)
  * _pint - print the top
  * @stack: stack
  * @line_number: line number
- * Return: nothing
  */
-
-void _pint(notUsed stack_t **stack, unsigned int notUsed line_number)
+void _pint(notUsed stack_t **stack, notUsed unsigned int line_number)
 {
-	if (is_empty())
+	if (!node_cnt())
 		print_err("can't pint, stack empty");
 
 	printf("%d\n", inf.head->n);
 
+}
+/**
+ * _pop - pop the top of the stack
+ * @stack: stack
+ * @line_number: line number
+ */
+void _pop(notUsed stack_t **stack, notUsed unsigned int line_number)
+{
+	stack_t *new_head;
+
+	if (!node_cnt())
+		print_err("can't pop an empty stack");
+	new_head = inf.head->prev;
+	free(inf.head);
+	inf.head = new_head;
+}
+
+/**
+ * _swap - swap the last two nodes
+ * @stack: stack
+ * @line_number: line number
+ */
+void _swap(notUsed stack_t **stack, notUsed unsigned int line_number)
+{
+	if (node_cnt() < 2)
+		print_err("can't swap, stack too short");
+	swap_n(&inf.head->n, &inf.head->prev->n);
 }

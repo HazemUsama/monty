@@ -22,26 +22,16 @@ void freeToken(void)
 */
 void freeStack(void)
 {
-	stack_t *curr;
+	stack_t *runner;
 
 	while (inf.head)
 	{
-		curr = inf.head->prev;
+		runner = inf.head->prev;
 		free(inf.head);
-		inf.head = curr;
+		inf.head = runner;
 	}
 }
 
-/**
- * is_empty - checking if the stack is empty
- *
- * Return: boolean
- */
-
-bool is_empty(void)
-{
-	return (inf.head == NULL);
-}
 
 /**
  * freeAll - free all allocated meomry
@@ -51,4 +41,19 @@ void freeAll(void)
 	freeToken();
 	freeStack();
 	fclose(inf.file);
+}
+
+/**
+ * swap_n - swap two numbers
+ *
+ * @a: first number
+ * @b: second number
+ */
+void swap_n(int *a, int *b)
+{
+	int tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
